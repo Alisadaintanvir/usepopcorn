@@ -69,7 +69,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Ice");
   const [selectedId, setSelectedId] = useState(null);
 
   function handleSelectMovie(id) {
@@ -78,6 +78,14 @@ export default function App() {
 
   function handleCloseMovie() {
     setSelectedId(null);
+  }
+
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
 
   useEffect(() => {
@@ -133,11 +141,16 @@ export default function App() {
               selectedId={selectedId}
               onCloseMovie={handleCloseMovie}
               api_key={api_key}
+              onAddWatched={handleAddWatched}
+              watched={watched}
             />
           ) : (
             <>
               <WatchedSummery watched={watched} />
-              <WatchedMovieList watched={watched} />
+              <WatchedMovieList
+                watched={watched}
+                onDeleteWatched={handleDeleteWatched}
+              />
             </>
           )}
         </Box>
@@ -146,7 +159,7 @@ export default function App() {
   );
 }
 
-function Loader() {
+export function Loader() {
   return <p className="loader">Loading</p>;
 }
 
