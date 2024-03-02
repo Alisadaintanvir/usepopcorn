@@ -90,6 +90,16 @@ export function MovieDetails({
     getMovieDetails(selectedId);
   }, [selectedId]);
 
+  useEffect(() => {
+    if (!title) return;
+
+    document.title = `Movie | ${title}`;
+
+    return function () {
+      document.title = "usePopcorn";
+    };
+  }, [title]);
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -129,7 +139,10 @@ export function MovieDetails({
               )}{" "}
             </>
           ) : (
-            <p> You rated this movie with {watchedUserRating} ⭐</p>
+            <>
+              <p> You rated this movie with {watchedUserRating} ⭐</p>
+              <button className="btn-add">Edit Rating</button>
+            </>
           )}
         </div>
 

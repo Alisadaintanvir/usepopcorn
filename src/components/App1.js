@@ -72,6 +72,8 @@ export default function App() {
   const [query, setQuery] = useState("Ice");
   const [selectedId, setSelectedId] = useState(null);
 
+  const controller = new AbortController();
+
   function handleSelectMovie(id) {
     setSelectedId((currentId) => (currentId === id ? null : id));
   }
@@ -89,12 +91,21 @@ export default function App() {
   }
 
   useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Escape") {
+        handleCloseMovie();
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     async function fetchMovies() {
       setIsLoading(true);
       setError("");
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?&apikey=${api_key}&s="${query}"`
+          `http://www.omdbapi.com/?&apikey=${api_key}&s="${query}"`,
+          { signal: controller.signal }
         );
 
         if (!res.ok)
@@ -103,8 +114,11 @@ export default function App() {
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movie not found.");
         setMovies(data.Search);
+        setError("");
       } catch (err) {
-        setError(err.message);
+        if (err.name !== "AbortError") {
+          setError(err.message);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -116,6 +130,10 @@ export default function App() {
       return;
     }
     fetchMovies();
+
+    return function () {
+      controller.abort();
+    };
   }, [query]);
 
   return (
