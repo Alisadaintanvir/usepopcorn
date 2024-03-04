@@ -69,7 +69,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("Ice");
+  const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
   const controller = new AbortController();
@@ -89,14 +89,6 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
-
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Escape") {
-        handleCloseMovie();
-      }
-    });
-  }, []);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -129,6 +121,7 @@ export default function App() {
       setError("");
       return;
     }
+    handleCloseMovie();
     fetchMovies();
 
     return function () {
