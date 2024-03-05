@@ -18,9 +18,9 @@ This is a simple movie rating app built using React. It allows users to search f
 - 
 ## How to Use
 1. Clone the repository to your local machine.
-2. Run npm install to install dependencies.
-3. Run npm start to start the development server.
-4. Open your web browser and navigate to http://localhost:3000/ to view the app.
+2. Run `npm install` to install dependencies.
+3. Run `npm start` to start the development server.
+4. Open your web browser and navigate to `http://localhost:3000/` to view the app.
    
 ## How it Works
 #### The app consists of several components:
